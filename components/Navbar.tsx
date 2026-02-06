@@ -18,9 +18,16 @@ export default function Navbar() {
                 viewport={{ once: true }}
                 transition={{ type: "spring", stiffness: 250, damping: 70, mass: 1 }}
             >
-                <a href="#!">
+                {/* --- MUDANÇA AQUI: Transformei o Link em Flex Column --- */}
+                <a href="#!" className="flex flex-col items-start gap-1">
                     <Image className="h-9.5 w-auto" src="/assets/premold-logo.svg" alt="logo" width={240} height={44} priority />
+                    
+                    {/* Texto adicionado abaixo da logo */}
+                    <span className="text-[10px] font-medium leading-none text-gray-600 dark:text-gray-300 ml-1">
+                        Uma solução Hiwston <span className="text-blue-600">Software</span>
+                    </span>
                 </a>
+                {/* -------------------------------------------------------- */}
 
                 <div className="hidden md:flex items-center gap-8 transition duration-500">
                     {navlinks.map((link: INavLink) => (
