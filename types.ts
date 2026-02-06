@@ -51,10 +51,11 @@ export interface PricingCardProps {
 
 export interface IPricing {
     name: string;
-    price: number;
+    price: number | string; // Alterado para aceitar "Grátis"
     period: string;
     features: string[];
     mostPopular: boolean;
+    isHiwston?: boolean; // Nova propriedade para a cor Azul
 }
 
 export interface SectionProps {
@@ -63,3 +64,4 @@ export interface SectionProps {
     buttonText: string;
     buttonHref: string;
 }
+

@@ -2,6 +2,19 @@ import { IPricing } from "@/types";
 
 export const pricingData: IPricing[] = [
     {
+        name: "Parceiro Hiwston",
+        price: "Grátis",
+        period: "vitalício",
+        features: [
+            "Monitoramento da produção em tempo real",
+            "Avisos de máquina parada",
+            "Relatório de produção diário",
+            "Exclusivo para clientes Hiwston"
+        ],
+        mostPopular: false,
+        isHiwston: true // Ativa o estilo Azul no componente
+    },
+    {
         name: "Essencial",
         price: 300,
         period: "mês",
@@ -31,7 +44,7 @@ export const pricingData: IPricing[] = [
     },
     {
         name: "Enterprise",
-        price: 0, // Definido como 0 para ativar o "Sob consulta" no componente visual
+        price: 0, // 0 ativa "Sob consulta"
         period: "custom",
         features: [
             "Multi-filiais (Gestão de várias fábricas)",

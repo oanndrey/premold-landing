@@ -1,60 +1,124 @@
 'use client'
-import SectionTitle from "@/components/SectionTitle"
-import { pricingData } from "@/data/pricing";
-import { IPricing } from "@/types";
+import SectionTitle from "@/components/SectionTitle";
+import { pricingData } from "@/data/pricing"; // Certifique-se que o caminho está correto
 import { CheckIcon } from "lucide-react";
 import { motion } from "motion/react";
 
 export default function PricingSection() {
     return (
-        <div id="pricing" className="px-4 md:px-16 lg:px-24 xl:px-32">
-            <SectionTitle 
-                text1="Planos" 
-                text2="Investimento Inteligente" 
-                text3="Escolha o plano ideal para o tamanho da sua fábrica. Escalabilidade e controle total para a sua produção de artefatos de cimento." 
+        <section id="plans" className="py-20 px-4 md:px-10 lg:px-16 xl:px-20">
+            <SectionTitle
+                text1="Planos e Preços"
+                text2="Escolha o ideal para sua fábrica"
+                text3="Comece pequeno e cresça com a gente. Temos uma condição especial para clientes Hiwston."
             />
 
-            <div className="flex flex-wrap items-center justify-center gap-8 mt-20">
-                {pricingData.map((plan: IPricing, index: number) => (
-                    <motion.div key={index} className={`w-72 text-center border border-red-950 p-6 pb-16 rounded-xl ${plan.mostPopular ? 'bg-red-950 relative' : 'bg-red-950/30'}`}
-                        initial={{ y: 150, opacity: 0 }}
-                        whileInView={{ y: 0, opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.15, type: "spring", stiffness: 320, damping: 70, mass: 1 }}
-                    >
-                        {plan.mostPopular && (
-                            <p className="absolute px-3 text-sm -top-3.5 left-3.5 py-1 bg-red-400 rounded-full">Recomendado</p>
-                        )}
-                        <p className="font-semibold">{plan.name}</p>
-                        
-                        <h1 className="text-3xl font-semibold">
-                            {typeof plan.price === 'number' && plan.price > 0 ? (
-                                <>
-                                    <span className="text-xl">R$</span> {plan.price}
-                                </>
-                            ) : (
-                                "Sob consulta"
-                            )}
-                            {plan.period && (
-                                <span className="text-gray-500 font-normal text-sm">/{plan.period}</span>
-                            )}
-                        </h1>
+            {/* ALTERAÇÃO AQUI: 
+                - grid-cols-1 (Mobile)
+                - md:grid-cols-2 (Tablet - fica 2 em cima, 2 embaixo)
+                - xl:grid-cols-4 (Desktop Grande - fica os 4 lado a lado)
+                - gap-6 (Diminuí um pouco o espaçamento para caber melhor os 4)
+                - max-w-[1600px] (Aumentei a largura máxima para dar respiro aos 4 cards)
+            */}
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-16 max-w-[1600px] mx-auto">
+                {pricingData.map((plan, index) => {
+                    // Lógica de Estilização
+                    const isHiwston = plan.isHiwston;
+                    
+                    // Definição de Cores e Bordas
+                    const containerClasses = isHiwston
+                        ? "border-blue-500/50 bg-slate-900/40 shadow-xl shadow-blue-900/10 hover:border-blue-400"
+                        : plan.mostPopular 
+                            ? "border-red-500/50 bg-slate-900/40 shadow-xl shadow-red-900/10 hover:border-red-400"
+                            : "border-slate-800 bg-slate-900/20 hover:border-slate-700";
 
-                        <ul className="list-none text-slate-300 mt-6 space-y-2 text-left">
-                            {plan.features.map((feature, idx) => (
-                                <li key={idx} className="flex items-start gap-2">
-                                    <CheckIcon className="size-4.5 mt-1 text-red-600 shrink-0" />
-                                    <p className="text-sm">{feature}</p>
-                                </li>
-                            ))}
-                        </ul>
-                        
-                        <button type="button" className={`w-full py-2.5 rounded-md font-medium mt-7 transition-all ${plan.mostPopular ? 'bg-white text-red-600 hover:bg-slate-200' : 'bg-red-500 hover:bg-red-600 text-white'}`}>
-                            {typeof plan.price === 'number' && plan.price > 0 ? "Assinar Plano" : "Falar com Consultor"}
-                        </button>
-                    </motion.div>
-                ))}
+                    const titleColor = isHiwston ? "text-blue-400" : (plan.mostPopular ? "text-red-400" : "text-white");
+                    const checkColor = isHiwston ? "text-blue-500" : "text-red-500";
+
+                    const buttonStyle = isHiwston
+                        ? "bg-blue-600 hover:bg-blue-700 text-white shadow-blue-900/20"
+                        : plan.mostPopular
+                            ? "bg-red-600 hover:bg-red-700 text-white shadow-red-900/20"
+                            : "bg-slate-800 hover:bg-slate-700 text-white border border-slate-700";
+
+                    const buttonText = isHiwston 
+                        ? "Ativar meu Plano" 
+                        : (plan.price === 0 ? "Falar com Vendas" : "Começar Teste Grátis");
+
+                    // Descrições baseadas no plano (já que não vem do data)
+                    const getDescription = () => {
+                        if (isHiwston) return "Exclusivo para clientes que já utilizam soluções Hiwston Tecnologia.";
+                        if (plan.name === "Essencial") return "Para fábricas que buscam profissionalizar a gestão básica.";
+                        if (plan.name === "Pro") return "Controle total de produção e financeiro para sua fábrica.";
+                        return "Para grandes indústrias com múltiplas plantas e processos complexos.";
+                    };
+
+                    return (
+                        <motion.div
+                            key={plan.name}
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            className={`relative rounded-2xl p-6 border flex flex-col h-full transition-all duration-300 hover:-translate-y-2 ${containerClasses}`}
+                        >
+                            {/* Badges */}
+                            {isHiwston && (
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] sm:text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-lg shadow-blue-900/50 whitespace-nowrap">
+                                    Cliente Hiwston
+                                </div>
+                            )}
+                            
+                            {!isHiwston && plan.mostPopular && (
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[10px] sm:text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-lg shadow-red-900/50 whitespace-nowrap">
+                                    Mais Popular
+                                </div>
+                            )}
+
+                            <div className="mb-4">
+                                <h3 className={`text-xl font-bold ${titleColor}`}>
+                                    {plan.name}
+                                </h3>
+                                <p className="text-slate-400 text-xs sm:text-sm mt-2 min-h-[40px] leading-relaxed">
+                                    {getDescription()}
+                                </p>
+                            </div>
+
+                            <div className="mb-6 flex items-baseline gap-1">
+                                {typeof plan.price === 'number' && plan.price > 0 ? (
+                                    <>
+                                        <span className="text-sm font-medium text-slate-400">R$</span>
+                                        <span className="text-3xl sm:text-4xl font-bold text-white">{plan.price}</span>
+                                    </>
+                                ) : (
+                                    <span className="text-3xl sm:text-4xl font-bold text-white">
+                                        {plan.price === 0 ? "Sob Consulta" : plan.price}
+                                    </span>
+                                )}
+                                
+                                {plan.period && (
+                                    <span className="text-slate-500 font-medium text-sm">
+                                        /{plan.period === "custom" ? "" : plan.period}
+                                    </span>
+                                )}
+                            </div>
+
+                            <ul className="space-y-3 mb-8 flex-1">
+                                {plan.features.map((feature, i) => (
+                                    <li key={i} className="flex items-start gap-3 text-slate-300 text-xs sm:text-sm">
+                                        <CheckIcon className={`size-4 sm:size-5 shrink-0 ${checkColor}`} />
+                                        <span>{feature}</span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <button className={`w-full py-3 rounded-xl font-semibold text-sm sm:text-base transition-all active:scale-95 ${buttonStyle}`}>
+                                {buttonText}
+                            </button>
+                        </motion.div>
+                    );
+                })}
             </div>
-        </div>
+        </section>
     );
 }
