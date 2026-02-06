@@ -23,7 +23,7 @@ export default function Navbar() {
                     <Image className="h-9.5 w-auto" src="/assets/premold-logo.svg" alt="logo" width={240} height={44} priority />
                     
                     {/* Texto adicionado abaixo da logo */}
-                    <span className="text-[10px] font-medium leading-none text-gray-600 dark:text-gray-300 ml-1">
+                    <span className="text-[14px] font-medium leading-none text-gray-600 dark:text-gray-300 ml-1">
                         Uma solução Hiwston <span className="text-blue-600">Software</span>
                     </span>
                 </a>
