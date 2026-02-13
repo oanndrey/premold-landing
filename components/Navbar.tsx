@@ -10,6 +10,13 @@ import { INavLink } from "@/types";
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
 
+    // Mensagem formatada para o WhatsApp
+    const whatsappNumber = "558897414191";
+    const whatsappMessage = encodeURIComponent(
+        "Olá! Visitei o site do Premold e gostaria, por gentileza, de obter mais informações sobre a solução. Poderiam me ajudar?"
+    );
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+
     return (
         <>
             <motion.nav className="fixed top-0 z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-32 backdrop-blur"
@@ -29,7 +36,7 @@ export default function Navbar() {
                 {/* Links de Navegação Desktop */}
                 <div className="hidden md:flex items-center gap-8 transition duration-500">
                     {navlinks.map((link: INavLink) => (
-                        <Link key={link.name} href={link.href} className="hover:text-red-500 transition">
+                        <Link key={link.name} href={link.href} className="hover:text-red-500 transition font-medium">
                             {link.name}
                         </Link>
                     ))}
@@ -44,12 +51,14 @@ export default function Navbar() {
                         Login
                     </Link>
                     
-                    <Link 
-                        href="#contactSection" 
+                    <a 
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="px-6 py-2.5 bg-red-600 hover:bg-red-700 active:scale-95 transition-all rounded-full text-white font-medium"
                     >
                         Entrar em Contato
-                    </Link>
+                    </a>
                 </div>
 
                 {/* Menu Mobile Button */}
@@ -59,7 +68,7 @@ export default function Navbar() {
             </motion.nav>
 
             {/* Menu Mobile Overlay */}
-            <div className={`fixed inset-0 z-[100] bg-black/90 backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-400 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+            <div className={`fixed inset-0 z-[100] bg-black/95 backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-400 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
                 {navlinks.map((link: INavLink) => (
                     <Link key={link.name} href={link.href} onClick={() => setIsOpen(false)}>
                         {link.name}
@@ -71,18 +80,20 @@ export default function Navbar() {
                 <Link 
                     href="https://premold.hiwston.com/login" 
                     onClick={() => setIsOpen(false)}
-                    className="text-white"
+                    className="text-white font-medium"
                 >
                     Login
                 </Link>
 
-                <Link 
-                    href="#contactSection" 
+                <a 
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     onClick={() => setIsOpen(false)}
                     className="px-8 py-3 bg-red-600 text-white rounded-full font-bold"
                 >
                     Entrar em Contato
-                </Link>
+                </a>
 
                 <button onClick={() => setIsOpen(false)} className="mt-4 active:ring-3 active:ring-white aspect-square size-10 p-1 items-center justify-center bg-red-600 hover:bg-red-700 transition text-white rounded-md flex">
                     <XIcon />
